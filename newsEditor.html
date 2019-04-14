@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .button-size {
+            font-size: 36px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+    <div id="app">
+        <i v-if='show' v-on:click='show=!show' title='Edit' class="button-size fas fa-pen-square"></i>
+        <i v-if='!show' v-on:click='save' title='Save' class="button-size far fa-save"></i>
+        <div v-if='show' id='reading-mode'>
+            <reading-comp :title='title' :author='author' :date='date' :category='category'>
+                {{article}}
+            </reading-comp>
+        </div>
+        <div v-if='!show' class="editing-mode">
+            <div><label for="">Article Title: </label><input v-model='title' v-on:input='check' type="text"><span>{{remain}}/{{title}}</span></div>
+            <div><label for="">Author Name: </label><input v-model='author' type="text"></div>
+            <ul>
+                <li v-for='element in category_list'>
+                    <label for="">{{element}}</label>
+                    <input v-bind:value='element' v-model='category' type="radio">
+                </li>
+            </ul>
+            <div><label for="">Article: </label><input v-model='article' type="text"></div>
+        </div>
+    </div>
+
+    <template id='reading-temp'>
+        <div>
+            <h1>{{title}}</h1>
+            <div id='line'></div>
+            <slot></slot>
+            <div id='line'></div>
+            <p>Created by <span>{{author}}</span> and last edited on <span>{{date}}</span></p>
+            <div><span>{{category}}</span></div>
+        </div>
+    </template>
+
+    <script>
+
+        Vue.component('reading-comp', {
+            el: '#reading-temp',
+            props: ['title', 'author', 'date', 'category'],
+            data:function() {
+                return {
+
+                }
+            },
+            methods: {
+
+            },
+        });
+        //Return and Finish Later.
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                show: true,
+                limit: 50,
+                title: 'Lorem ipsum',
+                article: '"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"',
+                author: 'Lorem de Ipsum',
+                date: '2098',
+                category: 'Tech',
+                category_list: ['Web', 'Tech', 'Code', 'DevOps', 'Computers']
+            },
+            computed: {
+                remain:function() {
+                    return this.limit - this.title.length;
+                }
+            },
+            methods: {
+                save:function() {
+                    var date = new Date();
+                    var year = String(date.getFullYear());
+                    var year_two_digit = "'"+year.substr(2, 2);
+                    var month = date.getMonth() + 1;
+                    switch(month) {
+                        case 1: 
+                        var month_str = 'Jan'
+                        break;
+                        case 2: 
+                        var month_str = 'Feb'
+                        break;
+                        case 3: 
+                        var month_str = 'Mar'
+                        break;
+                        case 4: 
+                        var month_str = 'Apr'
+                        break;
+                        case 5: 
+                        var month_str = 'May'
+                        break;
+                        case 6: 
+                        var month_str = 'Jun'
+                        break;
+                        case 7: 
+                        var month_str = 'Jul'
+                        break;
+                        case 8: 
+                        var month_str = 'Aug'
+                        break;
+                        case 9: 
+                        var month_str = 'Sep'
+                        break;
+                        case 10: 
+                        var month_str = 'Oct'
+                        break;
+                        case 11: 
+                        var month_str = 'Nov'
+                        break;
+                        case 12: 
+                        var month_str = 'Dec'
+                        break;
+                    }
+                    var day = date.getDate();
+                    if(day <= 9) {
+                        day = '0' + day;
+                    }
+                    var hour = date.getHours()
+                    var min = date.getMinutes();
+                    var sec = date.getSeconds();
+
+                    var mdy = month_str+' '+day+' '+year_two_digit;
+
+                    var hms = hour+':'+min+':'+sec;
+
+                    var ymdhms = mdy+'  '+hms;
+                    this.date = ymdhms;
+                    this.show = !this.show;
+                },
+                check:function() {
+                    if(this.remain < 0) {
+                        this.title = this.title.substr(0, this.limit);
+                    }
+                }
+            },
+        });
+    </script>
+</body>
+</html>

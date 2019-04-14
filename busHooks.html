@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{msg}}</p>
+        <hr/>
+        <comp1 v-on:to_vue_data='msg=arguments[0]'></comp1>
+        <hr/>
+        <comp2></comp2>
+    </div>
+
+    <template id=temp1>
+        <div class="comp_1">
+            <p>Component 1:</p>
+            <input v-model='message' />
+            <button v-on:click='send'>Click to Send</button>
+        </div>
+    </template>
+
+    <template id='temp2'>
+        <div class="comp_2">
+            <p>Component 2:</p>
+            <p>{{message_comp_2}}</p>
+        </div>
+    </template>
+
+    <script>
+        var bus = new Vue();
+
+        Vue.component('comp1', {
+            template: '#temp1',
+            data:function() {
+                return {
+                    message: 'Message Value.'
+                }
+            },
+            methods: {
+                send:function() {
+                    this.$emit('to_vue_data', this.message);
+                    bus.$emit('to_comp2', this.message);
+                }
+            },
+        });
+
+        Vue.component('comp2', {
+            template: '#temp2',
+            data:function() {
+                return {
+                    message_comp_2: 'Waiting for message_2 value.'
+                }
+            },
+            created:function() {
+                var that = this;
+                bus.$on('to_comp2', function(v) {
+                    that.message_comp_2=v;
+                });
+            },
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'Msg Value.'
+            }
+        });
+    </script>
+</body>
+
+</html>
