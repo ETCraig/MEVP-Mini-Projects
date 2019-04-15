@@ -7,27 +7,36 @@
     <title>Document</title>
 </head>
 <body>
-    <button id='btn' onclick='request()'>Send Ajax Request</button>
+    <ul id='ul'></ul>
     <script type="text/javascript">
         var ajax = new XMLHttpRequest();
+        var ul = document.getElementById('ul');
 
         function request() {
-            var url = './sendingRequest.php';
+            var url = 'ajaxProgram.php';
             ajax.onreadystatechange = response
             ajax.open('POST', url, true);
             ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ajax.send('name=me&msg=my message&time=2019');
+            ajax.send('range=all');
         }
 
         function response() {
-            console.log(ajax.readyState);
             if(ajax.readyState === 4) {
                 if(ajax.status === 200) {
-                    console.log(ajax.responseText);
-                    console.log(JSON.parse(ajax.responseText));
+                    var result = JSON.parse(ajax.responseText);
+                    li_content = 'Brand is: '+result.brand+' and Model is: '+result.model
+                    make_list_item(li_content, ul);
                 }
             }
         }
+
+        function make_list_item(list_item_content, parent_element) {
+            var li = document.createElement('li');
+            li.append(list_item_content);
+            parent_element.appendChild(li);
+        }
+
+        setInterval(function() {request()},3000);
     </script>
 </body>
 </html>
