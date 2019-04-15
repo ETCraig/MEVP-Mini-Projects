@@ -24,8 +24,17 @@
             if(ajax.readyState === 4) {
                 if(ajax.status === 200) {
                     var result = JSON.parse(ajax.responseText);
-                    li_content = 'Brand is: '+result.brand+' and Model is: '+result.model
-                    make_list_item(li_content, ul);
+                    if(result[0]) {
+                        var row_total = result[1].length;
+                        ul.innerHTML = "";
+                        for(i = 0; i < row_total; i++) {
+                            li_content = 'Brand is: '+result[1][i].brand+' and Model is: '+result[1][i].model
+                            make_list_item(li_content, ul);
+                        } 
+                    } else {
+                        ul.innerHTML = "";
+                        make_list_item(result[1], ul);
+                    }
                 }
             }
         }
