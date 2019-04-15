@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for"element in $data">{{element}}</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+
+        var my_mixin = {
+            template: '<b>Template Defined...</b>',
+            data: {
+                mixin_msg: 'Msg defined in MIXIN',
+                mixin_msg2: 'Msg2 defined in MIXIN'
+            },
+            methods: {
+                sayBy: function() {
+                    console.log('sayBy method from MIXIN methods');
+                }
+            },
+        }
+
+        var vm = new Vue({
+            el: '#app',
+            mixins: [my_mixin],
+            data: {
+                msg1: 'Msg1 defined in Vue data...',
+                msg2: 'Msg2 defined in Vue data...',
+                msg3: 'Msg3 defined in Vue data...'
+            },
+            methods: {
+                sayHi: function() {
+                    console.log('sayHi method from Vue Methods');
+                }
+            },
+        });
+    </script>
+</body>
+</html>
