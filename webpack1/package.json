@@ -1,0 +1,16 @@
+{
+  "name": "webpack1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack ./src/Entry.js ./dist/bundle.js"
+  },
+  "author": "E.T. Craig",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.30.0",
+    "webpack-dev-server": "^3.3.1"
+  }
+}
